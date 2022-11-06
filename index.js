@@ -5,7 +5,7 @@ const http = require("http");
 const httpServer = require('http').createServer();
 
 app.get("/", (req, res) => {
-    res.sendFile(__dirname + "/index.html")
+    res.sendFile(__dirname + "/client.html")
 })
 
 app.listen(8001, () =>{
@@ -34,8 +34,8 @@ wSS.on("request", request => {
 
     connection.on("close", () => console.log("Connection Closed"))
     connection.on("message", message => {
-        const result = JSON.parse(message.utf8Data)
-        console.log(result);
+        //const result = JSON.parse(message.utf8Data)
+        console.log("Server message: ", message.utf8Data);
     })
 
     //New client ID
@@ -47,7 +47,7 @@ wSS.on("request", request => {
 
     const payload = {
         "method": "connect",
-        "clientId": clientID
+        "clientID": clientID
     }
 
     connection.send(JSON.stringify(payload))

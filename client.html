@@ -28,15 +28,22 @@
         //Events
         usernameForm.addEventListener("submit", e => {
             e.preventDefault();
-            console.log(e.target[0].value)
-        })
+            console.log("Client ID:", clientID)
+            payload = {
+                "clientID":clientID,
+                "name":e.target[0].value
+            }
+
+            socket.send(JSON.stringify(payload))
+        }) 
+
 
         socket.onmessage = message => {
             const response = JSON.parse(message.data);
-            console.log(response);
 
-            if(response.method === "connect"){
+            if(response.method == "connect"){
                 clientID = response.clientID;
+                console.log("Connected")
             }
 
 
