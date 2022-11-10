@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="index.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
@@ -10,9 +11,9 @@
     <div id="outerbox">
 
         <form id="username-form">
-            <label>
+            <div id="userLabel">
                 Enter Username
-            </label>
+            </div>
 
             <input id="userName" type="text" required/>
 
@@ -28,14 +29,20 @@
     <script src="/socket.io/socket.io.js"></script>
     <script src="Game.js"></script>
     <script>
+        //Getting all Elements
+        const usernameForm = document.getElementById("username-form");
+        const outerBox = document.getElementById("outerbox");
+
+
         const socket = io();
 
         //Variables needed for client
         let clientID = null;
 
-        //Getting all Elements
-        const usernameForm = document.getElementById("username-form");
-        const outerBox = document.getElementById("outerbox");
+        //Render Background for start menu
+        let canvas = draw("game");
+        outerBox.appendChild(canvas);
+        
 
         //Receiving messages from server
         socket.on("clientID", (message) => {
@@ -43,7 +50,10 @@
         })
 
         socket.on("foundRoom", () => {
-            const canvas = map();
+            while(outerBox.firstChild)
+                outerBox.removeChild(outerBox.firstChild);
+
+            canvas = map();
             outerBox.appendChild(canvas);
 
         })
@@ -54,7 +64,8 @@
             
             console.log("User: " + clientID + " attempting to join room")
 
-            outerBox.innerHTML = "Looking for Match!";
+            outerBox.innerHTML = "<div id=\"loading\"> Looking for Game... </div>";
+            outerBox.appendChild(canvas);
             socket.emit("joinRoom", e.target[0].value);
         })
 
