@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="outerbox">
+
+        <form id="username-form">
+            <label>
+                Enter Username
+            </label>
+
+            <input id="userName" type="text" required/>
+
+            <div>
+                <button id="findGame">
+                    Find Game
+                </button>
+            </div>
+        </form>
+
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="Game.js"></script>
+    <script>
+        const socket = io();
+
+        //Variables needed for client
+        let clientID = null;
+
+        //Getting all Elements
+        const usernameForm = document.getElementById("username-form");
+        const outerBox = document.getElementById("outerbox");
+
+        //Receiving messages from server
+        socket.on("clientID", (message) => {
+            clientID = message;
+        })
+
+        socket.on("foundRoom", () => {
+            const canvas = map();
+            outerBox.appendChild(canvas);
+
+        })
+
+        //Wiring callback events to send server messages
+        usernameForm.addEventListener("submit", (e) => {
+            e.preventDefault();
+            
+            console.log("User: " + clientID + " attempting to join room")
+
+            outerBox.innerHTML = "Looking for Match!";
+            socket.emit("joinRoom", e.target[0].value);
+        })
+
+    </script>
+</body>
+</html>
