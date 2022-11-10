@@ -56,14 +56,37 @@
             clientID = message;
         })
 
-        socket.on("foundRoom", () => {
+        socket.on("foundRoom", (data) => {
+            let player1ID = data["player1"]["clientID"];
+            let leftPlayer = {};
+            let rightPlayer = {};
+
             div_loading.remove();
             canvas.remove();
             canvas = draw("game");
             outerBox.appendChild(canvas);
+            
+            
+
+            if(player1ID === clientID){
+
+                leftPlayer = data["player1"]
+                rightPlayer = data["player2"]
+            
+            }
+            else{
+
+                leftPlayer = data["player2"]
+                rightPlayer = data["player1"]
+            }
 
             leftPlayerInfo.style.display="block";
             rightPlayerInfo.style.display="block";
+
+            leftPlayerInfo.innerText = leftPlayer['username'];
+            rightPlayerInfo.innerText = rightPlayer['username'];
+
+            
         })
 
         //Wiring callback events to send server messages
