@@ -54,3 +54,19 @@ canvas {
     transform: translateX(-50%);
     text-align: center;
 }
+
+#left-player {
+    font-size: 1.5rem;
+    display: none;
+    position: fixed;
+    top:10%;
+    left:5%;
+}
+
+#right-player {
+    font-size: 1.5rem;
+    display: none;
+    position: fixed;
+    top:10%;
+    right:5%;
+}

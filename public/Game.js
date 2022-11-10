@@ -1,13 +1,16 @@
 const draw = (option) => {
     var images;
     var canvas;
+    var drawOrder;
 
     if (option === "main" || option =="loading"){
         images = {
             background: '/Images/map/country-platform-back.png',
         };
 
-        canvas = addImages(images);
+        drawOrder = [ 
+            {id: 'background', position: {x: 0, y: 0}}
+        ]
     }
 
     else if (option === "game"){
@@ -18,13 +21,20 @@ const draw = (option) => {
             idle_right: '/Images/character_right/Cowboy4_idle without gun_2.png'
         };
 
-        canvas = addImages(images);
+        drawOrder = [ 
+            {id: 'background', position: {x: 0, y: 0}},
+            {id: 'tiles', position: {x: -75, y: -65}},
+            {id: 'idle_left', position: {x:120,y: 90, w:40, h:40}},
+            {id: 'idle_right', position: {x:140,y: 90, w:40, h:40}},
+        ];
     }
+
+    canvas = addImages(images, drawOrder);
 
     return canvas;
 }
 
-const addImages = (images) => {
+const addImages = (images, drawOrder) => {
     const canvas = document.createElement("CANVAS");
     const ctx = canvas.getContext("2d");
       
@@ -37,12 +47,6 @@ const addImages = (images) => {
         };
       }
       
-      var drawOrder = [ 
-        {id: 'background', position: {x: 0, y: 0}},
-        {id: 'tiles', position: {x: -75, y: -65}},
-        {id: 'idle_left', position: {x:120,y: 90, w:40, h:40}},
-        {id: 'idle_right', position: {x:140,y: 90, w:40, h:40}},
-      ];
       
       ctx.imageSmoothingEnabled = true;
       ctx.imageSmoothingQuality = 'high'; 
@@ -53,7 +57,7 @@ const addImages = (images) => {
       
         var step = drawOrder[current];
         if(typeof images[step.id] === 'string') return ; // not loaded yet
-        console.log(step)
+        
         if(!Array.isArray(step.position)) step.position = [step.position];
       
         step.position.forEach(pos => 
