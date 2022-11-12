@@ -1,15 +1,18 @@
 const leftPlayerCharacter = document.createElement("img");
 const rightPlayerCharacter = document.createElement("img");
 const topPos = "67%";
-const charHeight = "150x"
-const charWidth = "150px"
-const startPosRight = "46%"
-const startPosLeft = "40%"
+const charHeight = "150x";
+const charWidth = "150px";
+const startPosRight = "46%";
+const startPosLeft = "40%";
+const deadSpritePos = "82%";
 let currSprite = 0;
-let baseDirLeft = "/Images/character_left/"
-let baseDirRight = "/Images/character_right/"
+let baseDirLeft = "/Images/character_left/";
+let baseDirRight = "/Images/character_right/";
 let baseWalkImg = "Cowboy4_walk without gun_";
-let baseShoot = "Cowboy4_shoot_1.png"
+let baseTurn = "Cowboy4_shoot_0.png";
+let baseDead = "Cowboy4_dead.png";
+let baseShoot = "Cowboy4_shoot_1.png";
 let walkInterval = "";
 
 
@@ -58,13 +61,37 @@ let walk = () => {
 
     currSprite++;
 }
+
 function walking(){
     clearInterval(walkInterval);
     walkInterval = setInterval(walk, 300);
 }
 
+// function shooting(){
+//     clearInterval(walkInterval);
+// }
+
+function setShot(direction){
+
+    if(direction == "right")
+        rightPlayerCharacter.src = baseDirRight + baseShoot;
+    else
+        leftPlayerCharacter.src = baseDirLeft + baseShoot;
+}
+
+function setDead(direction){
+    if(direction == "right"){
+        rightPlayerCharacter.src = baseDirRight + baseDead;
+        rightPlayerCharacter.style.top = deadSpritePos; 
+    }
+    else{
+        leftPlayerCharacter.src = baseDirLeft + baseDead;
+        leftPlayerCharacter.style.top = deadSpritePos;
+    }
+}
+
 function turn(){
     clearInterval(walkInterval);
-    leftPlayerCharacter.src = baseDirLeft + baseShoot;
-    rightPlayerCharacter.src = baseDirRight + baseShoot;
+    leftPlayerCharacter.src = baseDirLeft + baseTurn;
+    rightPlayerCharacter.src = baseDirRight + baseTurn;
 }

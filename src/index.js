@@ -14,8 +14,8 @@ let gameState = {};
 let ROOM_SIZE = 2;
 let NUM_ROUNDS = 5;
 let NUM_LIVES = Math.floor(NUM_ROUNDS / 2) + 1;
-let BASE_TIMER = 4000;
-let TIMER_RANGE = 2500;
+let BASE_TIMER = 5000;
+let TIMER_RANGE = 3000;
 
 app.use(express.static("public"));
 
@@ -159,7 +159,7 @@ io.on("connection", (socket) => {
 
             console.log("Player: " + username + "#" + clientID + " Sent shot");
             roundWinner = username + "#" +clientID;
-            gameState[currGame]["roundWinner"] = username + "#" +clientID;
+            gameState[currGame]["roundWinner"] = clientID;
             
             if(gameState[currGame]["player1"]["clientID"] === clientID)
                 otherPlayer = "player2"
@@ -193,11 +193,11 @@ io.on("connection", (socket) => {
         if(gameState[currRoom]["started"]){
             gameState[currRoom]["started"] = false;
 
-            if(gameState[currRoom]["currRound"] <= gameState[currRoom]["totalRounds"]){
-                gameState[currRoom]["interval"] = Math.floor(Math.random() * TIMER_RANGE) + BASE_TIMER;
-                gameState[currRoom]["currRound"] += 1;
-                gameState[currRoom]["roundWinner"] = "";
-            }
+            
+            gameState[currRoom]["interval"] = Math.floor(Math.random() * TIMER_RANGE) + BASE_TIMER;
+            gameState[currRoom]["currRound"] += 1;
+            gameState[currRoom]["roundWinner"] = "";
+            
         }
 
         console.log("After ClientID: " + clientID + " started: " + gameState[currRoom]["started"]);
