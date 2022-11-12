@@ -5,7 +5,7 @@ const draw = (option) => {
 
     if (option === "main" || option =="loading"){
         images = {
-            background: '/Images/map/country-platform-back.png',
+            background: '../Images/map/country-platform-back.png',
         };
 
         drawOrder = [ 
@@ -15,17 +15,13 @@ const draw = (option) => {
 
     else if (option === "game"){
         images = {
-            background: '/Images/map/country-platform-back.png',
-            tiles: '/Images/map/country-platform-tiles-example.png',
-            // idle_left: '/Images/character_left/Cowboy4_idle without gun_2.png',
-            // idle_right: '/Images/character_right/Cowboy4_idle without gun_2.png'
+            background: '../Images/map/country-platform-back.png',
+            tiles: '../Images/map/country-platform-tiles-example.png',
         };
 
         drawOrder = [ 
             {id: 'background', position: {x: 0, y: 0}},
             {id: 'tiles', position: {x: -75, y: -65}},
-            // {id: 'idle_left', position: {x:120,y: 90, w:40, h:40}},
-            // {id: 'idle_right', position: {x:140,y: 90, w:40, h:40}},
         ];
     }
 

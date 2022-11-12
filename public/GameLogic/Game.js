@@ -7,8 +7,9 @@ const startPosRight = "46%";
 const startPosLeft = "40%";
 const deadSpritePos = "82%";
 let currSprite = 0;
-let baseDirLeft = "/Images/character_left/";
-let baseDirRight = "/Images/character_right/";
+let baseDirLeft = "../Images/character_left/";
+let baseDirRight = "../Images/character_right/";
+let baseIdle = "Cowboy4_idle without gun_2.png";
 let baseWalkImg = "Cowboy4_walk without gun_";
 let baseTurn = "Cowboy4_shoot_0.png";
 let baseDead = "Cowboy4_dead.png";
@@ -18,7 +19,7 @@ let walkInterval = "";
 
 function startPosition(parent) {
 
-    leftPlayerCharacter.src = "/Images/character_left/Cowboy4_idle without gun_2.png";
+    leftPlayerCharacter.src = baseDirLeft + baseIdle;
     leftPlayerCharacter.style.position = "fixed";
     leftPlayerCharacter.style.left = startPosLeft;
     leftPlayerCharacter.style.top = topPos;
@@ -28,7 +29,7 @@ function startPosition(parent) {
     leftPlayerCharacter.id="left-player-char";
 
 
-    rightPlayerCharacter.src = "/Images/character_right/Cowboy4_idle without gun_2.png";
+    rightPlayerCharacter.src = baseDirRight + baseIdle;
     rightPlayerCharacter.style.position = "fixed";
     rightPlayerCharacter.style.left = startPosRight;
     rightPlayerCharacter.style.top = topPos;

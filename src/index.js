@@ -1,7 +1,5 @@
 const express =  require('express');
 const app = express();
-const http = require("http");
-const { getuid } = require('process');
 const httpServer = require('http').createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(httpServer);
@@ -82,6 +80,7 @@ io.on("connection", (socket) => {
         }
         
         if(foundRoom){
+
             // console.log("Current Socket: ", socket.id)
             // console.log("Found Room! ", [...rooms.get(clientRoom)]);
 
@@ -106,6 +105,7 @@ io.on("connection", (socket) => {
 
             // console.log("Current Socket: ",socket.id);
             // console.log("Payload: ", payload);
+
             gameState[clientRoom] = {
                 "interval" : Math.floor(Math.random() * TIMER_RANGE) + BASE_TIMER,
                 "player1" : player1,
@@ -142,7 +142,6 @@ io.on("connection", (socket) => {
 
             }, timer);
 
-            //First player to send shot wins. Update lives and display round winner
         }
     });
 
@@ -150,7 +149,6 @@ io.on("connection", (socket) => {
         const currGame = clients[socket.id]["room"];
         let roundWinner = gameState[currGame]["roundWinner"];
 
-        // console.log("Received shot from: ", clients[socket.id]["username"]+"#"+clientID)
         
         if(roundWinner === ""){
             const username = clients[socket.id]["username"]
@@ -209,10 +207,6 @@ io.on("connection", (socket) => {
     
 });
 
-// setInterval(()=> {
-//     console.log("GameStates: ", gameState);
-// }, 3000)
-
 
 httpServer.listen(PORT, () => {
     console.log("Listening on port: ", PORT);
@@ -224,7 +218,3 @@ function guid() {
       return v.toString(16);
     });
   }
-
-function gameLogic() {
-    
-}
