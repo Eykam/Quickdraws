@@ -170,7 +170,7 @@
 
             setTimeout(()=> {
                 socket.emit("nextRound");
-            },3000);
+            },4000);
 
         });
         
@@ -190,20 +190,22 @@
         })
 
         socket.on("gameWinner", (message) => {
+            const mainmenu = document.createElement("div");
             document.removeEventListener("click", shoot)
 
             //Render page that shows Winner if won and Loser if Lost, then reloads page on "go home" button
             gameInfo.innerHTML= "";
-            document.getElementById("rightPlayerCharacter").style.display="none";
-            document.getElementById("leftPlayerCharacter").style.display="none";
+            document.getElementById("right-player-char").style.display="none";
+            document.getElementById("left-player-char").style.display="none";
 
             canvas.remove();
             canvas = draw("main");
             outerBox.appendChild(canvas);
 
-
+            mainmenu.innerText = "Click To Go To Main Menu";
             winnerInfo.innerText = message + " won the Game!";
             winnerInfo.style.display = "block";
+            winnerInfo.appendChild(mainmenu);
 
             document.addEventListener("click",()=>{
                 window.location.reload();
@@ -245,10 +247,6 @@
 
         const shoot = function (){
             //Add shoot sprite logic here
-
-
-
-
             socket.emit("shoot");
             console.log("Shooting")
         };

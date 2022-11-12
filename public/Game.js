@@ -22,6 +22,7 @@ function startPosition(parent) {
     leftPlayerCharacter.style.width =charWidth;
     leftPlayerCharacter.style.height =charHeight;
     leftPlayerCharacter.style.display ="block";
+    leftPlayerCharacter.id="left-player-char";
 
 
     rightPlayerCharacter.src = "/Images/character_right/Cowboy4_idle without gun_2.png";
@@ -31,6 +32,7 @@ function startPosition(parent) {
     rightPlayerCharacter.style.width = charWidth;
     rightPlayerCharacter.style.height = charHeight;
     rightPlayerCharacter.style.display ="block";
+    rightPlayerCharacter.id="right-player-char";
 
     parent.appendChild(leftPlayerCharacter);
     parent.appendChild(rightPlayerCharacter);
@@ -57,7 +59,8 @@ let walk = () => {
     currSprite++;
 }
 function walking(){
-    walkInterval = setInterval(walk, 200);
+    clearInterval(walkInterval);
+    walkInterval = setInterval(walk, 300);
 }
 
 function turn(){

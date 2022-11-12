@@ -5,6 +5,7 @@ body{
     background: rgb(6, 15, 6);
     overflow: hidden;
     display: block;
+    user-select: none;
 }
 
 #outerbox{
