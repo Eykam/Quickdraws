@@ -3,32 +3,17 @@ const rightPlayerCharacter = document.createElement("img");
 const topPos = "67%";
 const charHeight = "150x"
 const charWidth = "150px"
-const startPosRight = "50%"
+const startPosRight = "46%"
 const startPosLeft = "40%"
 let currSprite = 0;
 let baseDirLeft = "/Images/character_left/"
 let baseDirRight = "/Images/character_right/"
 let baseWalkImg = "Cowboy4_walk without gun_";
-let currParent = "";
+let baseShoot = "Cowboy4_shoot_1.png"
+let walkInterval = "";
 
 
-function render (position){
-    switch(position) {
-        case "start":
-            startPosition();
-            break;
-
-        default:
-            startPosition();
-    }
-
-    console.log(leftPlayerCharacter);
-    return [leftPlayerCharacter, rightPlayerCharacter]
-
-}
-
-
-function startPosition() {
+function startPosition(parent) {
 
     leftPlayerCharacter.src = "/Images/character_left/Cowboy4_idle without gun_2.png";
     leftPlayerCharacter.style.position = "fixed";
@@ -47,11 +32,13 @@ function startPosition() {
     rightPlayerCharacter.style.height = charHeight;
     rightPlayerCharacter.style.display ="block";
 
+    parent.appendChild(leftPlayerCharacter);
+    parent.appendChild(rightPlayerCharacter);
+
 }
 
 
 let walk = () => {
-    console.log("walking")
     let srcNum = currSprite % 4;
     let imgRight = baseDirRight + baseWalkImg + srcNum + ".png"
     let imgLeft = baseDirLeft + baseWalkImg + srcNum + ".png"
@@ -67,19 +54,14 @@ let walk = () => {
     currCoordLeft = currCoordLeft - 1;
     leftPlayerCharacter.style.left = currCoordLeft + "%";
 
-    currParent.appendChild(rightPlayerCharacter);
-    currParent.appendChild(leftPlayerCharacter);
-    console.log("currCoordLeft: ", currCoordLeft)
-    console.log("currPic: ", imgLeft)
     currSprite++;
 }
-
-function walking(parent){
-    console.log("Walk");
-    currParent = parent;
-    setInterval(walk, 200);
+function walking(){
+    walkInterval = setInterval(walk, 200);
 }
 
 function turn(){
-    clearInterval(walk);
+    clearInterval(walkInterval);
+    leftPlayerCharacter.src = baseDirLeft + baseShoot;
+    rightPlayerCharacter.src = baseDirRight + baseShoot;
 }

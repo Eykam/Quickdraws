@@ -65,14 +65,6 @@
         winnerInfo.innerText="";
         winnerInfo.classList.add("winner-info");
         
-        let renderer = render("start")
-        for(const element in renderer){
-            console.log(renderer[element]);
-            outerBox.appendChild(renderer[element]);
-        }
-        
-        walking(outerBox);
-        
 
         //Receiving messages from server
         socket.on("clientID", (message) => {
@@ -125,12 +117,8 @@
             gameInfo.appendChild(timer(BASE_TIMER, gameInfo));
 
             //Add moving logic here
-
-
-
-
-
-
+            startPosition(outerBox);
+            walking();
             socket.emit("gameReady")
 
         })
@@ -138,11 +126,7 @@
 
         socket.on("startGame", (message) => {
             //Add turn logic here
-
-
-
-
-
+            turn();
             console.log(message)
             document.addEventListener("click", shoot);
         
@@ -194,12 +178,8 @@
             socket.emit("gameReady");
 
             //Add moving logic here
-
-
-
-
-
-
+            startPosition(outerBox);
+            walking();
 
             //Render current round in top middle and 
             // countdown until next round starts, after countdown finishes, remove element
@@ -214,10 +194,13 @@
 
             //Render page that shows Winner if won and Loser if Lost, then reloads page on "go home" button
             gameInfo.innerHTML= "";
-            
+            document.getElementById("rightPlayerCharacter").style.display="none";
+            document.getElementById("leftPlayerCharacter").style.display="none";
+
             canvas.remove();
             canvas = draw("main");
             outerBox.appendChild(canvas);
+
 
             winnerInfo.innerText = message + " won the Game!";
             winnerInfo.style.display = "block";

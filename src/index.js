@@ -15,7 +15,7 @@ let ROOM_SIZE = 2;
 let NUM_ROUNDS = 5;
 let NUM_LIVES = Math.floor(NUM_ROUNDS / 2) + 1;
 let BASE_TIMER = 4000;
-let TIMER_RANGE = 3000;
+let TIMER_RANGE = 2500;
 
 app.use(express.static("public"));
 
