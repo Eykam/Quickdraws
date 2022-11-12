@@ -29,8 +29,10 @@
 
     </div>
 
+    <!-- Imported Scripts -->
     <script src="/socket.io/socket.io.js"></script>
-    <script src="Game.js"></script>
+    <script src="Map.js"></script>
+
     <script>
         //Getting all Elements
         const usernameForm = document.getElementById("username-form");
@@ -38,6 +40,9 @@
         const leftPlayerInfo = document.getElementById("left-player");
         const rightPlayerInfo = document.getElementById("right-player");
         const div_loading = document.createElement("div");
+        const leftPlayerLives = document.createElement("div");
+        const rightPlayerLives = document.createElement("div");
+
         let canvas = draw("main");
 
 
@@ -58,8 +63,10 @@
 
         socket.on("foundRoom", (data) => {
             let player1ID = data["player1"]["clientID"];
+            let totalLives = Math.floor(data["totalRounds"] / 2) + 1;
             let leftPlayer = {};
             let rightPlayer = {};
+            
 
             div_loading.remove();
             canvas.remove();
@@ -83,10 +90,94 @@
             leftPlayerInfo.style.display="block";
             rightPlayerInfo.style.display="block";
 
-            leftPlayerInfo.innerText = leftPlayer['username'];
-            rightPlayerInfo.innerText = rightPlayer['username'];
+            leftPlayerInfo.innerText = leftPlayer['username'] + "#" + leftPlayer['clientID'];
+            rightPlayerInfo.innerText = rightPlayer['username'] + "#" + rightPlayer['clientID'];
+
+            leftPlayerLives.classList.add("lives")
+            leftPlayerLives.innerText = "Lives: "
+            leftPlayerInfo.appendChild(renderLives(leftPlayerLives, leftPlayer["lives"], totalLives));
+
+            rightPlayerLives.classList.add("lives")
+            rightPlayerLives.innerText = "Lives: "
+            rightPlayerInfo.appendChild(renderLives(rightPlayerLives, rightPlayer["lives"], totalLives));
+
+
+            //inital render of current round and countdown
+
+
 
             
+
+            socket.emit("gameReady")
+
+            
+        })
+
+
+        socket.on("startGame", (message) => {
+            console.log("StartGame message: ", message);
+            
+            document.addEventListener("click", shoot);
+
+        });
+
+
+        socket.on("roundWinner", (data) => {
+            let leftPlayer = "";
+            let rightPlayer = "";
+            let player1ID = data["player1"]["clientID"];
+            let totalLives = Math.floor(data["totalRounds"] / 2) + 1;
+
+            if(player1ID === clientID){
+
+                leftPlayer = data["player1"]
+                rightPlayer = data["player2"]
+
+            }
+            
+            else{
+
+                leftPlayer = data["player2"]
+                rightPlayer = data["player1"]
+            }
+
+            //redraw canvas to move players back to starting point
+            canvas.remove();
+            canvas = draw("game");
+            outerBox.appendChild(canvas);
+            document.removeEventListener("click", shoot)
+
+
+            //after round, update players info
+            leftPlayerInfo.append(renderLives(leftPlayerLives, leftPlayer["lives"], totalLives));
+            rightPlayerInfo.append(renderLives(rightPlayerLives, rightPlayer["lives"], totalLives));
+            console.log("Round " + data["currRound"] + " Winner: ", data["roundWinner"]);
+
+            //Render component that shows who won the round
+
+
+
+
+            socket.emit("nextRound");
+        });
+        
+        socket.on("continue", ()=> {
+            //Render current round in top middle and 
+            // countdown until next round starts, after countdown finishes, remove element
+
+
+
+            socket.emit("gameReady");
+        })
+
+        socket.on("gameWinner", (message) => {
+            document.removeEventListener("click", shoot)
+
+            //Render page that shows Winner if won and Loser if Lost, then reloads page on "go home" button
+
+
+
+            console.log("Congrats! Player: " +message+" won!");
         })
 
         //Wiring callback events to send server messages
@@ -103,6 +194,29 @@
             socket.emit("joinRoom", e.target[0].value);
             console.log("User: " + clientID + " attempting to join room")
         })
+
+        //Helper Functions:
+        function renderLives(parent, lives, totalLives){
+            parent.innerHTML = "";
+
+            for (let i= 0; i < totalLives; i++){
+                let currDiv = document.createElement("div");
+
+                if(i < lives) 
+                    currDiv.classList.add("remainingLife")
+                else
+                    currDiv.classList.add("lostLife")
+
+                parent.appendChild(currDiv)
+            }
+
+            return parent;
+        }
+
+        const shoot = function (){
+            socket.emit("shoot");
+            console.log("Shooting")
+        };
 
     </script>
 </body>

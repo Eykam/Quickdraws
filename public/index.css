@@ -72,3 +72,23 @@ canvas {
     top:10%;
     right:5%;
 }
+
+.lives {
+    display: flex;
+}
+
+.remainingLife{
+    background: green;
+    margin-left: 1rem;
+    height: 1.5rem;
+    width: 1.5rem;
+    border-radius: .5rem;
+}
+
+.lostLife {
+    background: red;
+    margin-left: 1rem;
+    height: 1.5rem;
+    width: 1.5rem;
+    border-radius: .5rem;
+}
