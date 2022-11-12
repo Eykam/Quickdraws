@@ -131,12 +131,13 @@ io.on("connection", (socket) => {
         // console.log("Curr Client Room: ",clients[socket.id]["room"])
         // console.log("GameState: ", gameState[clients[socket.id]["room"]]);
         // console.log("Timer: ", gameState[clients[socket.id]["room"]]["interval"]);
+
         if (!started) {
 
             gameState[currGame]["started"] = true;
 
             setTimeout(() => {
-                //
+
                 io.to(currGame).emit("startGame", "Shoot Now! Timer: " + timer);
 
             }, timer);
@@ -203,7 +204,7 @@ io.on("connection", (socket) => {
         console.log("After ClientID: " + clientID + " currRound: " + gameState[currRoom]["currRound"]);
         console.log("Curr Room: ",gameState[currRoom]);
 
-        io.to(currRoom).emit("continue");
+        io.to(currRoom).emit("continue", gameState[currRoom]);
     });
     
 });

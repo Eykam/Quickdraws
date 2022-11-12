@@ -62,6 +62,7 @@ canvas {
     position: fixed;
     top:10%;
     left:5%;
+    text-align: center;
 }
 
 #right-player {
@@ -71,6 +72,29 @@ canvas {
     position: fixed;
     top:10%;
     right:5%;
+    text-align: center;
+}
+
+#game-info {
+    font-size: 2rem;
+    font-weight: bold;
+    display: none;
+    position: fixed;
+    top:10%;
+    left:50%;
+    transform: translateX(-50%);
+    text-align: center;
+}
+
+#winner-info {
+    font-size: 3rem;
+    display: none;
+    top:50%;
+    left:30%;
+    position:fixed;
+    transform: translateX(-50%);
+    transform: translateY(-50%);
+    text-align: center;
 }
 
 .lives {

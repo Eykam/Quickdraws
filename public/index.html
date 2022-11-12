@@ -26,6 +26,8 @@
 
         <div id="left-player">Username</div>
         <div id="right-player">Username</div>
+        <div id="game-info">Empty</div>
+        <div id="winner-info">Empty</div>
 
     </div>
 
@@ -39,9 +41,13 @@
         const outerBox = document.getElementById("outerbox");
         const leftPlayerInfo = document.getElementById("left-player");
         const rightPlayerInfo = document.getElementById("right-player");
+        const gameInfo = document.getElementById("game-info");
+        const winnerInfo = document.getElementById("winner-info");
+
         const div_loading = document.createElement("div");
         const leftPlayerLives = document.createElement("div");
         const rightPlayerLives = document.createElement("div");
+        const BASE_TIMER = 3000;
 
         let canvas = draw("main");
 
@@ -54,6 +60,8 @@
 
         //Render Background for start menu
         outerBox.appendChild(canvas);
+        winnerInfo.innerText=""
+        winnerInfo.classList.add("winner-info")
         
 
         //Receiving messages from server
@@ -103,22 +111,19 @@
 
 
             //inital render of current round and countdown
-
-
-
-            
+            gameInfo.appendChild(roundDisplay(data["currRound"],gameInfo));
+            gameInfo.appendChild(timer(BASE_TIMER, gameInfo));
 
             socket.emit("gameReady")
 
-            
         })
 
 
         socket.on("startGame", (message) => {
-            console.log("StartGame message: ", message);
-            
-            document.addEventListener("click", shoot);
 
+            console.log(message)
+            document.addEventListener("click", shoot);
+        
         });
 
 
@@ -154,30 +159,42 @@
             console.log("Round " + data["currRound"] + " Winner: ", data["roundWinner"]);
 
             //Render component that shows who won the round
+            winnerInfo.innerText = data['roundWinner'] + " won this round!";
+            winnerInfo.style.display = "block";
 
+            setTimeout(()=> {
+                socket.emit("nextRound");
+            },3000);
 
-
-
-            socket.emit("nextRound");
         });
         
-        socket.on("continue", ()=> {
+        socket.on("continue", (data)=> {
+            socket.emit("gameReady");
+
             //Render current round in top middle and 
             // countdown until next round starts, after countdown finishes, remove element
-
-
-
-            socket.emit("gameReady");
+            winnerInfo.style.display = "none"
+            gameInfo.appendChild(roundDisplay(data["currRound"],gameInfo));
+            gameInfo.appendChild(timer(BASE_TIMER, gameInfo));
+            
         })
 
         socket.on("gameWinner", (message) => {
             document.removeEventListener("click", shoot)
 
             //Render page that shows Winner if won and Loser if Lost, then reloads page on "go home" button
+            gameInfo.innerHTML= "";
+            
+            canvas.remove();
+            canvas = draw("main");
+            outerBox.appendChild(canvas);
 
+            winnerInfo.innerText = message + " won the Game!";
+            winnerInfo.style.display = "block";
 
-
-            console.log("Congrats! Player: " +message+" won!");
+            document.addEventListener("click",()=>{
+                window.location.reload();
+            });
         })
 
         //Wiring callback events to send server messages
@@ -217,6 +234,39 @@
             socket.emit("shoot");
             console.log("Shooting")
         };
+
+        const timer = (BASE_TIMER, parent) => {
+            let timeDisplay = document.createElement("div");
+            timeDisplay.classList.add("time-display");
+            let currTime = BASE_TIMER;
+
+            parent.style.display= "block"
+
+            let setTime = setInterval(()=>{
+                timeDisplay.innerText = "";
+                if(currTime <= 0){
+                    clearInterval(setTime);
+                    timeDisplay.style.display="none";
+                }
+                
+                console.log("Time: ", currTime/1000);
+                timeDisplay.innerText= currTime/1000;
+                currTime -= 1000;
+
+            },1000);
+
+            return timeDisplay;
+        }
+
+        const roundDisplay = (currRound, parent) => {
+            let roundDisplay = document.createElement("div");
+            
+            parent.innerHTML = "";
+            roundDisplay.classList.add("round-display");
+
+            roundDisplay.innerText = "Round: " + currRound;
+            return roundDisplay;
+        }
 
     </script>
 </body>
