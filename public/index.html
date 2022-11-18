@@ -1,43 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <link rel="stylesheet" href="index.css">
-    <link rel="manifest" href="manifest.json">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <link rel="stylesheet" href="index.css" />
+    <link rel="stylesheet" href="/css/Bird.css" />
+    <link rel="manifest" href="manifest.json" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Quickdraw</title>
-</head>
+  </head>
 
-<body>
+  <body>
     <div id="outerbox">
+      <form id="username-form">
+        <div id="userLabel">Enter Username</div>
 
-        <form id="username-form">
-            <div id="userLabel">
-                Enter Username
-            </div>
+        <input id="userName" type="text" required />
 
-            <input id="userName" type="text" required/>
+        <div>
+          <button id="findGame">Find Game</button>
+        </div>
+      </form>
 
-            <div>
-                <button id="findGame">
-                    Find Game
-                </button>
-            </div>
-        </form>
-
-        <div id="left-player"> </div>
-        <div id="right-player"> </div>
-        <div id="game-info"> </div>
-        <div id="winner-info"> </div>
-
+      <div id="left-player"></div>
+      <div id="right-player"></div>
+      <div id="game-info"></div>
+      <div id="winner-info"></div>
     </div>
 
     <!-- Imported Scripts -->
     <script src="/socket.io/socket.io.js"></script>
+    <script src="GameLogic/Birds.js"></script>
     <script src="GameLogic/Map.js"></script>
     <script src="GameLogic/Game.js"></script>
     <script src="GameLogic/Main.js"></script>
-
-</body>
+  </body>
 </html>
