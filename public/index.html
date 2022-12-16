@@ -1,38 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <link rel="stylesheet" href="index.css" />
-    <link rel="stylesheet" href="/css/Bird.css" />
-    <link rel="manifest" href="manifest.json" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Quickdraw</title>
-  </head>
 
-  <body>
-    <div id="outerbox">
-      <form id="username-form">
-        <div id="userLabel">Enter Username</div>
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link rel="stylesheet" href="index.css" />
+  <link rel="stylesheet" href="/css/Bird.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quickdraw</title>
+</head>
 
-        <input id="userName" type="text" required />
+<body>
+  <div id="outerbox">
+    <div id="userLabel" class="title"> Quickdraw </div>
 
-        <div>
-          <button id="findGame">Find Game</button>
-        </div>
-      </form>
-
-      <div id="left-player"></div>
-      <div id="right-player"></div>
-      <div id="game-info"></div>
-      <div id="winner-info"></div>
+    <div id="button-form" class="general-form">
+      <button id="findGame" class="game-buttons">Find Game</button>
+      <a href="/login"><button id="login-button" class="game-buttons"> Login </button></a>
+      <a href="/register"><button id="register-button" class="game-buttons"> Register </button></a>
+      <a href="/info"><button id="info-button" class="game-buttons"> Help </button></a>
+      <button id="logout-button" class="game-buttons">Log Out</button>
     </div>
 
-    <!-- Imported Scripts -->
-    <script src="/socket.io/socket.io.js"></script>
-    <script src="GameLogic/Birds.js"></script>
-    <script src="GameLogic/Map.js"></script>
-    <script src="GameLogic/Game.js"></script>
-    <script src="GameLogic/Main.js"></script>
-  </body>
+    <div id="left-player"></div>
+    <div id="right-player"></div>
+    <div id="game-info"></div>
+    <div id="winner-info"></div>
+  </div>
+
+  <!-- Imported Scripts -->
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="GameLogic/Birds.js"></script>
+  <script src="GameLogic/Map.js"></script>
+  <script src="GameLogic/Game.js"></script>
+  <script src="GameLogic/Main.js"></script>
+</body>
+
 </html>

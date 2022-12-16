@@ -15,27 +15,44 @@ body {
   height: 100%;
 }
 
-#username-form {
+.general-form {
   position: fixed;
   display: flex;
   flex-direction: column;
   top: 40%;
   transform: translateY(-50%);
   left: 50%;
+  width:15%;
   transform: translateX(-50%);
   text-align: center;
 }
 
-#userLabel {
-  font-size: 3rem;
-  margin-bottom: 5px;
+#logout-button {
+  display: none;
+}
+.title {
+  position: fixed;
+  top: 10%;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 5rem;
+  margin-bottom: 20px;
 }
 
 #userName {
   margin: 5px;
 }
 
-#findGame {
+.player-name {
+  position: fixed;
+  top: 20%;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 2rem;
+  margin-bottom: 5px;
+}
+
+.game-buttons {
   font-size: 1rem;
   font-weight: bold;
   color: #ffffff;
@@ -43,9 +60,10 @@ body {
   background-color: transparent;
   border: 0.5rem #ffffff solid;
   border-radius: 1rem;
+  margin-bottom: 10px;
 }
 
-#findGame:hover {
+.game-buttons:hover {
   border-color: #818080;
   color: #818080;
 }
@@ -142,6 +160,15 @@ canvas {
   border-color: #fff transparent transparent transparent;
 }
 
+.leaderboard{
+  position: fixed;
+  left: 1%;
+  top: 40%
+}
+
+#board{
+  border:solid white;
+}
 @keyframes spin {
   from {
     transform: rotate(0deg);

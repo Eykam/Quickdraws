@@ -13,28 +13,6 @@ function createBirds() {
     const birdDelay = -1 * Math.random() + "s";
     const birdDuration = Math.random() + 1.5 + "s";
 
-    // let containerID = "";
-    // let birdID = "";
-
-    // switch (i) {
-    //   case 0:
-    //     containerID = "bird-cont-one";
-    //     birdID = "bird-one";
-    //     break;
-    //   case 1:
-    //     containerID = "bird-cont-two";
-    //     birdID = "bird-one";
-    //     break;
-    //   case 2:
-    //     containerID = "bird-cont-three";
-    //     birdID = "bird-one";
-    //     break;
-    //   default:
-    //     containerID = "bird-cont-four";
-    //     birdID = "bird-one";
-    //     break;
-    // }
-
     birdCont.classList.add("bird-container");
     // birdCont.classList.add(containerID);
     birdCont.style.top = contHeight;

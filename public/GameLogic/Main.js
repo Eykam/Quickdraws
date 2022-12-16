@@ -1,14 +1,22 @@
-const usernameForm = document.getElementById("username-form");
+const usernameForm = document.getElementById("button-form");
 const outerBox = document.getElementById("outerbox");
 const leftPlayerInfo = document.getElementById("left-player");
 const rightPlayerInfo = document.getElementById("right-player");
 const gameInfo = document.getElementById("game-info");
 const winnerInfo = document.getElementById("winner-info");
+const findGameButton = document.getElementById("findGame");
+const loginButton = document.getElementById("login-button");
+const registerButton = document.getElementById("register-button");
+const logoutButton = document.getElementById("logout-button");
+const title = document.getElementById("userLabel");
 
 const loader = document.createElement("div");
 const div_loading = document.createElement("div");
 const leftPlayerLives = document.createElement("div");
 const rightPlayerLives = document.createElement("div");
+const playerNameDiv = document.createElement("div");
+
+const playerUsername = sessionStorage.getItem("username");
 const BASE_TIMER = 3000;
 
 //change back to main
@@ -18,13 +26,72 @@ const socket = io();
 
 //Variables needed for client
 let clientID = null;
-let playerUsername = "";
 
 //Render Background for start menu
+if(playerUsername == "" || playerUsername == null){
+  
+  findGameButton.style.display = "none";
+  playerNameDiv.innerText = "Please Login or Register!"
+  
+
+}else{
+  
+  findGameButton.style.display = "block";
+  loginButton.style.display = "none";
+  registerButton.style.display = "none";
+
+  logoutButton.style.display = "block"
+  logoutButton.addEventListener("click", (e) => {
+    sessionStorage.setItem("username", "");
+    window.location.reload();
+  
+  })
+
+  playerNameDiv.innerText = "Welcome Back " + playerUsername + "!";
+}
+
+playerNameDiv.classList.add("player-name");
+
 outerBox.appendChild(canvas);
 outerBox.appendChild(createBirds());
+outerBox.appendChild(playerNameDiv);
 winnerInfo.innerText = "";
 winnerInfo.classList.add("winner-info");
+
+//render leaderboard
+let board;
+(async function (){
+  const leaderboard = document.createElement("div");
+  let tableString = `<table id="board" rules="all">
+      <tr>
+        <th> Username</th>
+        <th> Wins </th>
+        <th> Loses </th>
+        <th> Total Games</th>
+        <th> Win/Loss %</th>
+      </tr>`
+
+  let board = await fetch("/leaderboard");
+  board = await board.json();
+  for(key in board){
+    console.log(board[key])
+    tableString += `<tr>
+                      <td>${board[key]["user"]}</td>
+                      <td>${board[key]["wins"]}</td>
+                      <td>${board[key]["loses"]}</td>
+                      <td>${board[key]["total"]}</td>
+                      <td>${board[key]["wins"] / board[key]["total"]}</td>
+                    </tr>`
+  }
+  tableString += "</table>"
+
+  console.log(tableString);
+  leaderboard.innerHTML = tableString;
+
+  leaderboard.classList.add("leaderboard");
+  outerBox.appendChild(leaderboard);
+})()
+
 
 //Receiving messages from server
 socket.on("clientID", (message) => {
@@ -195,21 +262,27 @@ socket.on("gameWinner", (message) => {
 });
 
 //Wiring callback events to send server messages
-usernameForm.addEventListener("submit", (e) => {
-  e.preventDefault();
-  usernameForm.remove();
-  playerUsername = e.target[0].value;
+findGameButton.addEventListener("click", (e) => {
+  if(playerUsername != null && playerUsername != ""){
+    e.preventDefault();
+    usernameForm.remove();
+    title.remove();
+    playerNameDiv.remove();
 
-  div_loading.innerHTML = "Looking for Game...";
-  div_loading.id = "loading";
-  loader.classList.add("loader");
-  //   loader.innerText = "hello";
-  outerBox.appendChild(canvas);
-  outerBox.appendChild(div_loading);
-  div_loading.appendChild(loader);
+    div_loading.innerHTML = "Looking for Game...";
+    div_loading.id = "loading";
+    loader.classList.add("loader");
+    //   loader.innerText = "hello";
+    outerBox.appendChild(canvas);
+    outerBox.appendChild(div_loading);
+    div_loading.appendChild(loader);
 
-  socket.emit("joinRoom", e.target[0].value);
-  console.log("User: " + clientID + " attempting to join room");
+    socket.emit("joinRoom", playerUsername);
+    console.log("User: " + clientID + " attempting to join room");
+  }
+  else{
+    window.location.replace("/login");
+  }
 });
 
 //Helper Functions:
@@ -265,3 +338,7 @@ const roundDisplay = (currRound, parent) => {
   roundDisplay.innerText = "Round: " + currRound;
   return roundDisplay;
 };
+
+const renderBoard = async () => {
+  return await fetch("/leaderboard");
+}

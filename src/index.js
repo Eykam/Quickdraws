@@ -1,7 +1,10 @@
 const express =  require('express');
+const path = require("path")
 const app = express();
 const httpServer = require('http').createServer(app);
+const bodyParser = require('body-parser');
 const { Server } = require("socket.io");
+const {registerUser, loginUser, addResults, leaderBoard} = require("./database.js");
 const io = new Server(httpServer);
 const PORT = process.env.PORT || 3000;
 
@@ -15,7 +18,64 @@ let NUM_LIVES = Math.floor(NUM_ROUNDS / 2) + 1;
 let BASE_TIMER = 5000;
 let TIMER_RANGE = 3000;
 
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 app.use(express.static("public"));
+
+// app.set("views", path.resolve(__dirname, "..") + "\\public\\views");
+// app.set("view engine", "ejs");
+
+app.get("/", (req, res) => {
+    res.render("index");
+});
+
+app.get("/info", (req, res) => {
+    res.redirect("/views/info.html")
+});
+
+app.get("/login", (req, res) => {
+    res.redirect("/views/login.html")
+});
+
+app.post("/processLogin", async (req, res) => {
+    const [result , message] = await loginUser(req.body);
+    
+    if(result){
+        res.status(200).json({"status":true,"user":req.body.user})
+    }else{
+        res.status(200).json({"status":false, "message": message}) 
+    }
+});
+
+app.get("/register", (req, res) => {
+    res.redirect("/views/register.html")
+});
+
+app.post("/processRegister", async (req, res) => {
+    const [result, message] = await registerUser(req.body);
+
+    if(result){
+        res.status(200).json({"status":true,"user":req.body.user})
+    }else{
+        res.status(200).json({"status":false, "message":message}) 
+    }
+});
+
+app.get("/leaderboard", async (req, res) => {
+    const board = await leaderBoard();
+    const result = (await board.toArray()).map((entry) => {
+        return {
+            "user":entry['user'],
+            "wins":entry['wins'],
+            "loses":entry['loses'],
+            'total':entry['total games']
+        }
+    });
+
+    console.log("----------------", result);
+
+    res.send(result);
+})
 
 io.on("connection", (socket) => {
     
@@ -174,9 +234,10 @@ io.on("connection", (socket) => {
             }
             
             else{
-
-                io.to(currGame).emit("gameWinner",username + "#" + clientID)
             
+                io.to(currGame).emit("gameWinner",username + "#" + clientID)
+                addResults(username,true);
+                addResults( gameState[currGame][otherPlayer]["username"],false);
             }
             
         }

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <link rel="stylesheet" href="../index.css" />
+    <link rel="stylesheet" href="../css/Bird.css" />
+    <link rel="stylesheet" href="../css/info.css" />
+    <link rel="manifest" href="manifest.json" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quickdraw</title>
+</head>
+
+<body>
+    <a href="/">
+        <div id="arrow"> &larr; </div>
+    </a>
+
+    <div id="outerbox">
+        <div id="info">
+
+            <h1> Quickdraw </h1>
+            <h2> A pistol dueling game where players can compete against their friends online </h2>
+
+            <ul>
+                <li> On round start players spawn in the center of the map facing each other </li>
+                <li> A randomized timer is set between 5-8 seconds</li>
+                <li> When timer is started, players turn and walk automatically</li>
+                <li> At the end of the randomized timer, players will turn to face each other and shooting is enabled
+                </li>
+                <li> To shoot players can use any key </li>
+                <li> First player to shoot after turning wins the round </li>
+                <li> First player to win 3 rounds wins the game </li>
+
+            </ul>
+        </div>
+    </div>
+
+    <!-- Imported Scripts -->
+    <script src="../GameLogic/Birds.js"></script>
+    <script src="../GameLogic/Map.js"></script>
+    <script src="../GameLogic/Info.js"></script>
+</body>
+
+</html>
