@@ -15,6 +15,7 @@ const div_loading = document.createElement("div");
 const leftPlayerLives = document.createElement("div");
 const rightPlayerLives = document.createElement("div");
 const playerNameDiv = document.createElement("div");
+const leaderboard = document.createElement("div");
 
 const playerUsername = sessionStorage.getItem("username");
 const BASE_TIMER = 3000;
@@ -61,7 +62,6 @@ winnerInfo.classList.add("winner-info");
 //render leaderboard
 let board;
 (async function (){
-  const leaderboard = document.createElement("div");
   let tableString = `<table id="board" rules="all">
       <tr>
         <th> Username</th>
@@ -80,7 +80,7 @@ let board;
                       <td>${board[key]["wins"]}</td>
                       <td>${board[key]["loses"]}</td>
                       <td>${board[key]["total"]}</td>
-                      <td>${board[key]["wins"] / board[key]["total"]}</td>
+                      <td>${(board[key]["wins"] / board[key]["total"]).toFixed(2)}</td>
                     </tr>`
   }
   tableString += "</table>"
@@ -106,6 +106,7 @@ socket.on("foundRoom", (data) => {
 
   div_loading.remove();
   canvas.remove();
+  leaderboard.remove();
   canvas = draw("game");
   outerBox.appendChild(canvas);
 
